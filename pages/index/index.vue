@@ -1,8 +1,50 @@
 <template>
 	<view class="content">
-		<image class="logo" src="/static/logo.png"></image>
-		<view class="text-area">
-			<text class="title">{{title}}</text>
+		<!-- demo -->
+		<scroll-view 
+		class="top" 
+		scroll-x="true" 
+		:scroll-left="left"
+		 @scroll="handleScrollTop">
+			<view class="list" v-for="i in 10" :key="i">
+				薄膜#{{i}}
+			</view>
+		</scroll-view>
+		<scroll-view  
+		scroll-y="true" 
+		class="left"  
+		@scroll="handleScrollLeft"
+		:scroll-top="top">
+			<view class="list" v-for="i in 10" :key="i">
+				属性{{i}}
+			</view>
+		</scroll-view>
+		<view class="content">
+			<scroll-view 
+			class="scroll" 
+			scroll-y="true"   
+			scroll-x="true" 
+			:scroll-left="left"
+			:scroll-top="top"
+			@scroll="handleScrollContent">
+				<table border="1">
+					<tbody>
+						<tr v-for="i in 10" :key="i">
+							<td v-for="j in 10" :key="j">
+								<view class="span">
+									<view class="btn" @click="btn(i,j,'合格')">
+										合格
+									</view>
+									<view class="btn" @click="btn(i,j,'不合格')">
+										不合格
+									</view>
+								</view>
+							</td>
+						</tr>
+
+					</tbody>
+				</table>
+			</scroll-view>
 		</view>
 	</view>
 </template>
@@ -11,42 +53,31 @@
 	export default {
 		data() {
 			return {
-				title: 'Hello'
+				top:0,
+				left:0
 			}
 		},
 		onLoad() {
-
 		},
+	
 		methods: {
-
+			handleScrollContent(event) {
+				this.top = event.detail.scrollTop;
+				this.left = event.detail.scrollLeft;
+			},
+			handleScrollTop(event){
+				this.left = event.detail.scrollLeft;
+			},
+			handleScrollLeft(event){
+				this.top = event.detail.scrollTop;
+			},
+			btn(i,j,info){
+				console.log(`您点击了薄膜${j},属性${i},${info}`);
+			}
 		}
 	}
 </script>
 
-<style>
-	.content {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-	}
-
-	.logo {
-		height: 200rpx;
-		width: 200rpx;
-		margin-top: 200rpx;
-		margin-left: auto;
-		margin-right: auto;
-		margin-bottom: 50rpx;
-	}
-
-	.text-area {
-		display: flex;
-		justify-content: center;
-	}
-
-	.title {
-		font-size: 36rpx;
-		color: #8f8f94;
-	}
+<style scoped lang="scss">
+	@import "css/index.scss";
 </style>
